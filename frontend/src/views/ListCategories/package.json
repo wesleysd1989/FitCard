@@ -1,0 +1,6 @@
+{
+  "name": "list-categories",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ListCategories.jsx"
+}
