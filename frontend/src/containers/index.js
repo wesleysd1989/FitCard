@@ -1,3 +1,4 @@
 import Companies from './Companies';
+import Categories from './Categories';
 
-export { Companies };
+export { Companies, Categories };
