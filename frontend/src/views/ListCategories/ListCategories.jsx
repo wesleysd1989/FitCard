@@ -18,7 +18,7 @@ class ListCategories extends Component {
                         </h1>
                     </div>
                     <div className="col-md">
-                        <a href="#/new" className="btn btn-success float-right">
+                        <a href="#/categories/new" className="btn btn-success float-right">
                             + Nova Categoria
                         </a>
                     </div>
