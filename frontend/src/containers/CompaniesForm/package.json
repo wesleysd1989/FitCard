@@ -1,0 +1,6 @@
+{
+  "name": "companies-form",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./CompaniesForm.js"
+}
