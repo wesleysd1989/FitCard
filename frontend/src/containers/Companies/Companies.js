@@ -8,7 +8,7 @@ class Companies extends Component {
   render() {
     return (
       <div>
-        <Nav />
+        <Nav company="active" />
         <ListCompanies />                
       </div>
     );

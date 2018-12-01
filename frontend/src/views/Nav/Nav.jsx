@@ -11,10 +11,10 @@ class Nav extends Component {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item active">
-                            <a className="nav-link" href="#/companies">Empresas</a>
+                        <li className={`nav-item ${this.props.company}`}>
+                            <a className="nav-link" href="#/companies"> Empresas</a>
                         </li>
-                        <li className="nav-item">
+                        <li className={`nav-item ${this.props.category}`}>
                             <a className="nav-link" href="#/categories">Categorias</a>
                         </li>
                     </ul>

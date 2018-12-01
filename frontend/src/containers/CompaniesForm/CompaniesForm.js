@@ -8,7 +8,7 @@ class CompaniesForm extends Component {
   render() {
     return (
       <div>
-        <Nav />
+        <Nav company="active"/>
         <FormCompanies />              
       </div>
     );

@@ -8,7 +8,7 @@ class Categories extends Component {
   render() {
     return (
       <div>
-        <Nav /> 
+        <Nav category="active"/> 
         <ListCategories />
       </div>
     );
