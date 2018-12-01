@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Nav } from '../../views'
+import { Nav, FormCategories } from '../../views'
 
 
 
@@ -8,7 +8,8 @@ class CategoriesForm extends Component {
   render() {
     return (
       <div>
-        <Nav />               
+        <Nav />
+        <FormCategories />              
       </div>
     );
   }

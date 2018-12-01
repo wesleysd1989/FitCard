@@ -4,8 +4,46 @@ import React, { Component } from 'react'
 class FormCategories extends Component {
     render() {
         return (
-            <div>
-                FormCategories
+            <div className="container">
+                <nav aria-label="breadcrumb">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item">
+                            <a href="#/categories">Categorias</a></li>
+                        <li className="breadcrumb-item active" aria-current="page">Cadastro de Nova Categoria</li>
+                    </ol>
+                </nav>
+                <div className="row mb-4">
+                    <div className="col-md-9">
+                        <h1 className="h2 border-left pl-2">
+                            Cadastro de Nova Categoria
+                        </h1>
+                    </div>
+                    <div className="col-md-3">
+                        <a href="#/categories" className="btn btn-light float-right">
+                            Voltar
+                        </a>
+                    </div>
+                </div>
+                <form >
+                    <div className="card">
+                        <div className="card-header">
+                            Informações sobre a categoria
+                        </div>
+                        <div className="card-body">
+                            <div className="form-row">
+                                <div className="form-group col-md-4">
+                                    <label for="name">Nome</label>
+                                    <input type="text" className="form-control" id="name" formControlName="name" />
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <label for="description">Descrição</label>
+                                    <input type="text" className="form-control" id="description" formControlName="description" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+                </form>
             </div>
         )
     }
