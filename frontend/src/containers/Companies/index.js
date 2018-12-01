@@ -1,3 +1,3 @@
-import Companies from './Home';
+import Companies from './Companies';
 
 export default Companies;
