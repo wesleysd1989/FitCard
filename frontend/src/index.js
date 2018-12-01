@@ -13,14 +13,15 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 
 // Containers
-import { Companies, Categories } from './containers';
+import { Companies, CompaniesForm, Categories } from './containers';
 
 ReactDOM.render((
     <HashRouter>
       <Switch>
-      <Route exact path="/" name="Companies Page" component={Companies}/>
+      <Route exact path="/companies" name="Companies Page" component={Companies}/>
+      <Route exact path="/companies/new" name="Companies Page" component={CompaniesForm}/>
       <Route exact path="/categories" name="Categories Page" component={Categories}/>
-      <Redirect from="/*" to="/" />
+      <Redirect from="/*" to="/companies" />
       </Switch>
     </HashRouter>
 ), document.getElementById('root'));

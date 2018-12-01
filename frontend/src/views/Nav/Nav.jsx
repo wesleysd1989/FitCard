@@ -12,7 +12,7 @@ class Nav extends Component {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item active">
-                            <a className="nav-link" href="#/">Empresas</a>
+                            <a className="nav-link" href="#/companies">Empresas</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#/categories">Categorias</a>
