@@ -25,11 +25,10 @@ class FormCompanies extends Component {
                     </div>
                 </div>
                 <form>
-
                     <div className="card">
                         <div className="card-header">
                             Informações sobre a empresa
-          </div>
+                        </div>
                         <div className="card-body">
                             <div className="form-row">
                                 <div className="form-group col-md-2">
@@ -37,10 +36,10 @@ class FormCompanies extends Component {
                                     <div className="btn-group">
                                         <label className="btn btn-outline-info active">
                                             Ativa
-                  </label>
+                                        </label>
                                         <label className="btn btn-outline-info">
                                             Inativa
-                  </label>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -66,13 +65,13 @@ class FormCompanies extends Component {
                                     <select name="categoryId" id="categoryId" formControlName="categoryId" className="form-control">
                                         <option>
                                             Categoria 1
-                  </option>
+                                        </option>
                                         <option>
                                             Categoria 2
-                  </option>
+                                        </option>
                                         <option>
                                             Categoria 3
-                  </option>
+                                        </option>
                                     </select>
                                 </div>
                                 <div className="form-group col-md-2">
