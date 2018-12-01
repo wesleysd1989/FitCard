@@ -2,6 +2,19 @@
 import React, { Component } from 'react'
 
 class FormCompanies extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            ativa: "active",
+            inativa: null
+        }
+    }
+    changeState(valor) {
+        if (valor === "ativa")
+            this.setState({ ativa: "active", inativa: null })
+        else if (valor === "inativa")
+            this.setState({ ativa: null, inativa: "active" })
+    }
     render() {
         return (
             <div className="container">
@@ -32,12 +45,12 @@ class FormCompanies extends Component {
                         <div className="card-body">
                             <div className="form-row">
                                 <div className="form-group col-md-2">
-                                    <label for="status">Status da empresa</label>
+                                    <label htmlFor="status">Status da empresa</label>
                                     <div className="btn-group">
-                                        <label className="btn btn-outline-info active">
+                                        <label onClick={() => this.changeState("ativa")} className={`btn btn-outline-info ${this.state.ativa}`}>
                                             Ativa
                                         </label>
-                                        <label className="btn btn-outline-info">
+                                        <label onClick={() => this.changeState("inativa")} className={`btn btn-outline-info ${this.state.inativa}`}>
                                             Inativa
                                         </label>
                                     </div>
@@ -45,24 +58,24 @@ class FormCompanies extends Component {
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-12">
-                                    <label for="socialName">Razão Social</label>
-                                    <input type="text" className="form-control" id="socialName" formControlName="socialName" />
+                                    <label htmlFor="socialName">Razão Social</label>
+                                    <input type="text" className="form-control" id="socialName" formcontrolname="socialName" />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-12">
-                                    <label for="fantasyName">Nome Fantasia</label>
-                                    <input type="text" className="form-control" id="fantasyName" formControlName="fantasyName" />
+                                    <label htmlFor="fantasyName">Nome Fantasia</label>
+                                    <input type="text" className="form-control" id="fantasyName" formcontrolname="fantasyName" />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-4">
-                                    <label for="cnpj">CNPJ</label>
-                                    <input type="text" className="form-control text-right" id="cnpj" formControlName="cnpj" />
+                                    <label htmlFor="cnpj">CNPJ</label>
+                                    <input type="text" className="form-control text-right" id="cnpj" formcontrolname="cnpj" />
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <label for="categoryId">Categoria</label>
-                                    <select name="categoryId" id="categoryId" formControlName="categoryId" className="form-control">
+                                    <label htmlFor="categoryId">Categoria</label>
+                                    <select name="categoryId" id="categoryId" formcontrolname="categoryId" className="form-control">
                                         <option>
                                             Categoria 1
                                         </option>
@@ -75,40 +88,40 @@ class FormCompanies extends Component {
                                     </select>
                                 </div>
                                 <div className="form-group col-md-2">
-                                    <label for="agency">Agencia</label>
-                                    <input type="text" className="form-control text-right" id="agency" formControlName="agency" />
+                                    <label htmlFor="agency">Agencia</label>
+                                    <input type="text" className="form-control text-right" id="agency" formcontrolname="agency" />
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <label for="acount">Conta</label>
-                                    <input type="text" className="form-control text-right" id="acount" formControlName="acount" />
+                                    <label htmlFor="acount">Conta</label>
+                                    <input type="text" className="form-control text-right" id="acount" formcontrolname="acount" />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-8">
-                                    <label for="email">E-Mail</label>
-                                    <input type="text" className="form-control" id="email" formControlName="email" />
+                                    <label htmlFor="email">E-Mail</label>
+                                    <input type="text" className="form-control" id="email" formcontrolname="email" />
                                 </div>
                                 <div className="form-group col-md-2">
-                                    <label for="telephone">Telefone</label>
-                                    <input type="text" className="form-control text-right" id="telephone" formControlName="telephone" />
+                                    <label htmlFor="telephone">Telefone</label>
+                                    <input type="text" className="form-control text-right" id="telephone" formcontrolname="telephone" />
                                 </div>
                                 <div className="form-group col-md-2" >
-                                    <label for="registerDate">Data Criação</label>
-                                    <input type="text" className="form-control" id="registerDate" formControlName="registerDate" />
+                                    <label htmlFor="registerDate">Data Criação</label>
+                                    <input type="text" className="form-control" id="registerDate" formcontrolname="registerDate" />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-5">
-                                    <label for="address">Endereço</label>
-                                    <input type="text" className="form-control" id="address" formControlName="address" />
+                                    <label htmlFor="address">Endereço</label>
+                                    <input type="text" className="form-control" id="address" formcontrolname="address" />
                                 </div>
                                 <div className="form-group col-md-2">
-                                    <label for="city">Cidade</label>
-                                    <input type="text" className="form-control" id="city" formControlName="city" />
+                                    <label htmlFor="city">Cidade</label>
+                                    <input type="text" className="form-control" id="city" formcontrolname="city" />
                                 </div>
                                 <div className="form-group col-md-2">
-                                    <label for="province">Estado</label>
-                                    <input type="text" className="form-control" id="province" formControlName="province" />
+                                    <label htmlFor="province">Estado</label>
+                                    <input type="text" className="form-control" id="province" formcontrolname="province" />
                                 </div>
                             </div>
                         </div>
