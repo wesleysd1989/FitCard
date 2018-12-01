@@ -13,12 +13,12 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 
 // Containers
-import { Home } from './containers';
+import { Companies } from './containers';
 
 ReactDOM.render((
     <HashRouter>
       <Switch>
-      <Route exact path="/" name="Home Page" component={Home}/>
+      <Route exact path="/" name="Home Page" component={Companies}/>
       <Redirect from="/*" to="/" />
       </Switch>
     </HashRouter>

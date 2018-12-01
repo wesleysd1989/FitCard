@@ -1,3 +1,3 @@
-import Home from './Home';
+import Companies from './Companies';
 
-export { Home };
+export { Companies };
