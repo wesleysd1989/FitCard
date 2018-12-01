@@ -23,6 +23,36 @@ class ListCategories extends Component {
                         </a>
                     </div>
                 </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr className="bg-primary text-light">
+                            <th>Categorias</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td>
+                                <strong>Nome Da categoria</strong><br />
+                                <small>Descrição da categoria</small>
+                            </td>
+                            <td>
+                                <a href="#/:id/edit" className="btn btn-outline-info btn-sm mr-2">Editar</a>
+                                <button href="#/:id/detele" className="btn btn-outline-danger btn-sm">Excluir</button>
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <strong>Nome Da categoria</strong><br />
+                                <small>Descrição da categoria</small>
+                            </td>
+                            <td>
+                                <a href="#/:id/edit" className="btn btn-outline-info btn-sm mr-2">Editar</a>
+                                <button href="#/:id/detele" className="btn btn-outline-danger btn-sm">Excluir</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }
