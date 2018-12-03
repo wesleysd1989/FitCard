@@ -10,7 +10,7 @@ class ListCompanies extends Component {
                         <li className="breadcrumb-item active" aria-current="page">Empresas</li>
                     </ol>
                 </nav>
-                <div class="row mb-4">
+                <div className="row mb-4">
                     <div className="col-md">
                         <h1 className="h2 border-left pl-2">
                             Empresas

@@ -32,12 +32,12 @@ class FormCategories extends Component {
                         <div className="card-body">
                             <div className="form-row">
                                 <div className="form-group col-md-4">
-                                    <label for="name">Nome</label>
-                                    <input type="text" className="form-control" id="name" formControlName="name" />
+                                    <label htmlFor="name">Nome</label>
+                                    <input type="text" className="form-control" id="name" formcontrolname="name" />
                                 </div>
                                 <div className="form-group col-md-8">
-                                    <label for="description">Descrição</label>
-                                    <input type="text" className="form-control" id="description" formControlName="description" />
+                                    <label htmlFor="description">Descrição</label>
+                                    <input type="text" className="form-control" id="description" formcontrolname="description" />
                                 </div>
                             </div>
                         </div>

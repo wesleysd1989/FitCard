@@ -23,7 +23,7 @@ class ListCategories extends Component {
                         </a>
                     </div>
                 </div>
-                <table class="table table-hover">
+                <table className="table table-hover">
                     <thead>
                         <tr className="bg-primary text-light">
                             <th>Categorias</th>
