@@ -1,7 +1,15 @@
 
 import React, { Component } from 'react'
 
+import MaskedInput from 'react-maskedinput'
+import cnpjValidatior from "@fnando/cnpj/dist/node";
+// eslint-disable-next-line
+import { isValid as isValidCnpj } from "@fnando/cnpj";
+
+
+
 class FormCompanies extends Component {
+    
     constructor(props) {
         super(props)
         this.state = {
@@ -25,6 +33,10 @@ class FormCompanies extends Component {
             this.setState({ ativa: null, inativa: "active" })
     }
 
+    _onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
     changeStateSocialName(value) {
         this.setState({ socialNameValue: value })
         if (value === "") {
@@ -44,7 +56,7 @@ class FormCompanies extends Component {
 
     changeStateCNPJ(value) {
         this.setState({ cnpjValue: value })
-        if (value === "") {
+        if (cnpjValidatior.isValid(value) !== true) {
             this.setState({ cnpjCheck: true })
         }
         else {
@@ -71,14 +83,14 @@ class FormCompanies extends Component {
             this.setState({ telephoneChecked: false })
         }
     }
-
+    
     onVerify() {
         this.setState({
             verified: true
         })
     }
     check(socialName, cnpj, categoria, telephone) {
-        if (socialName !== "" && cnpj !== "") {
+        if (socialName !== "" && cnpjValidatior.isValid(cnpj) !== false) {
             if (categoria === "Categoria 2" && telephone === "")
                 this.setState({ verified: false })
             else if (categoria === "Categoria 2" && telephone !== "")
@@ -94,6 +106,7 @@ class FormCompanies extends Component {
         const socialNameCheck2 = this.state.socialNameCheck2
         const cnpjCheck = this.state.cnpjCheck
         const telephoneChecked = this.state.telephoneChecked
+        console.log()
         return (
             <div className="container">
                 <nav aria-label="breadcrumb">
@@ -137,7 +150,7 @@ class FormCompanies extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="socialName">*Razão Social</label>
-                                    <input type="text" onChange={(e) => { this.changeStateSocialName(e.target.value); this.check(e.target.value, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue); }} className="form-control" id="socialName" formcontrolname="socialName" />
+                                    <input type="text" placeholder="Razão Social" onChange={(e) => { this.changeStateSocialName(e.target.value); this.check(e.target.value, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue); }} className="form-control" id="socialName" formcontrolname="socialName" />
                                     <div className="text-danger" >
                                         {!!socialNameCheck1 ? <div >dado obrigatório</div> : <div></div>}
                                         {!!socialNameCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
@@ -147,15 +160,15 @@ class FormCompanies extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="fantasyName">Nome Fantasia</label>
-                                    <input type="text" className="form-control" id="fantasyName" formcontrolname="fantasyName" />
+                                    <input type="text" className="form-control" placeholder="Nome Fantasia" id="fantasyName" formcontrolname="fantasyName" />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-4">
                                     <label htmlFor="cnpj">*CNPJ</label>
-                                    <input type="text" onChange={(e) => { this.changeStateCNPJ(e.target.value); this.check(this.state.socialNameValue, e.target.value, this.state.categoryValue, this.state.telephoneValue); }} className="form-control text-right" id="cnpj" formcontrolname="cnpj" />
+                                    <MaskedInput className="form-control text-right" placeholder="CNPJ" mask="11.111.111/1111-11" id="cnpj" formcontrolname="cnpj" name="cnpj" size="18" onChange={(e) => { this.changeStateCNPJ(e.target.value); this.check(this.state.socialNameValue, e.target.value, this.state.categoryValue, this.state.telephoneValue);}} />
                                     <div className="text-danger">
-                                        {!!cnpjCheck ? <div >dado obrigatório</div> : <div></div>}
+                                        {!!cnpjCheck ? <div >CNPJ invalido ou obrigatório</div> : <div></div>}
                                     </div>
                                 </div>
                                 <div className="form-group col-md-3">
@@ -177,42 +190,38 @@ class FormCompanies extends Component {
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label htmlFor="agency">Agencia</label>
-                                    <input type="text" className="form-control text-right" id="agency" formcontrolname="agency" />
+                                    <MaskedInput className="form-control text-right" placeholder="Agencia" mask="111-1" id="agency" formcontrolname="agency" name="agency" size="15"/>
                                 </div>
                                 <div className="form-group col-md-3">
                                     <label htmlFor="acount">Conta</label>
-                                    <input type="text" className="form-control text-right" id="acount" formcontrolname="acount" />
+                                    <MaskedInput className="form-control text-right" placeholder="Conta" mask="11.111-1" id="acount" formcontrolname="acount" name="acount" size="15"/>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-8">
                                     <label htmlFor="email">E-Mail</label>
-                                    <input type="text" className="form-control" id="email" formcontrolname="email" />
+                                    <input type="text" placeholder="E-Mail" className="form-control" id="email" formcontrolname="email" />
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label htmlFor="telephone">Telefone</label>
-                                    <input type="text" onChange={(e) => { this.changeStateTelephone(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, e.target.value); }} className="form-control text-right" id="telephone" formcontrolname="telephone" />
+                                    <MaskedInput className="form-control text-right" placeholder="telefone" mask="+55 11 11111-1111" id="telephone" formcontrolname="telephone" name="telephone" size="20" onChange={(e) => { this.changeStateTelephone(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, e.target.value); }} />
                                     <div className="text-danger" >
                                         {!!telephoneChecked ? <div >dado obrigatório</div> : <div></div>}
                                     </div>
-                                </div>
-                                <div className="form-group col-md-2" >
-                                    <label htmlFor="registerDate">Data Criação</label>
-                                    <input type="text" className="form-control" id="registerDate" formcontrolname="registerDate" />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-5">
                                     <label htmlFor="address">Endereço</label>
-                                    <input type="text" className="form-control" id="address" formcontrolname="address" />
+                                    <input type="text" placeholder="Endereço" className="form-control" id="address" formcontrolname="address" />
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label htmlFor="city">Cidade</label>
-                                    <input type="text" className="form-control" id="city" formcontrolname="city" />
+                                    <input type="text" placeholder="Cidade" className="form-control" id="city" formcontrolname="city" />
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label htmlFor="province">Estado</label>
-                                    <input type="text" className="form-control" id="province" formcontrolname="province" />
+                                    <input type="text" placeholder="Estado" className="form-control" id="province" formcontrolname="province" />
                                 </div>
                             </div>
                         </div>
