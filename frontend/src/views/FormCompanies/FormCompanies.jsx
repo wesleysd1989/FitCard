@@ -33,10 +33,6 @@ class FormCompanies extends Component {
             this.setState({ ativa: null, inativa: "active" })
     }
 
-    _onChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value })
-    }
-
     changeStateSocialName(value) {
         this.setState({ socialNameValue: value })
         if (value === "") {
