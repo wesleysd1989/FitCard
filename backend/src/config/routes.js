@@ -8,4 +8,6 @@ module.exports = function (server) {
     server.use('/api', openApi)
     const Category = require('../api/services/categoryService')
     Category.register(openApi, '/categories')
+    const Company = require('../api/services/companyService')
+    Company.register(openApi, '/companies')  
 }
