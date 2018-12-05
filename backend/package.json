@@ -1,0 +1,33 @@
+{
+  "name": "fitcard-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/loader.js",
+  "scripts": {
+    "dev": "nodemon",
+    "production": "pm2 start src/loader.js --name fitcard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wesleysd1989/FitCard.git"
+  },
+  "keywords": [],
+  "author": "Wesley Dias",
+  "license": "Private",
+  "bugs": {
+    "url": "https://github.com/wesleysd1989/FitCard/issues"
+  },
+  "engines": {
+    "node": ">=8.11.2"
+  },
+  "homepage": "https://github.com/wesleysd1989/FitCard#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-query-int": "^3.0.0",
+    "mongoose": "^5.3.14",
+    "mongoose-paginate": "^5.0.3",
+    "node-restful": "^0.2.6",
+    "pm2": "^3.2.2"
+  }
+}
