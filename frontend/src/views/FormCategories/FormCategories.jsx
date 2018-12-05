@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 class FormCategories extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class FormCategories extends Component {
     render() {
         const categoryCheck1 = this.state.categoryCheck1
         const categoryCheck2 = this.state.categoryCheck2
+        const category = this.props.category
         return (
             <div className="container">
                 <nav aria-label="breadcrumb">
@@ -69,7 +71,11 @@ class FormCategories extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-4">
                                     <label htmlFor="name">Nome</label>
+                                    {!!category ?
+                                    <input type="text" className="form-control" defaultValue={category.name} onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" formcontrolname="name" />
+                                    :
                                     <input type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" formcontrolname="name" />
+                                    }
                                     <div className="text-danger" >
                                         {!!categoryCheck1 ? <div >dado obrigatório</div> : <div></div>}
                                         {!!categoryCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
@@ -77,15 +83,25 @@ class FormCategories extends Component {
                                 </div>
                                 <div className="form-group col-md-8">
                                     <label htmlFor="description">Descrição</label>
+                                    {!!category ?
+                                    <input type="text" className="form-control" defaultValue={category.description} onChange={(e) => { this.check(e.target.value); }} id="description" formcontrolname="description" />
+                                    :
                                     <input type="text" className="form-control" id="description" formcontrolname="description" />
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {!!category ? 
+                    <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Editar</button> 
+                    : 
                     <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+                    }
+                    
                 </form>
             </div>
         )
     }
 }
-export default FormCategories
+const mapStateToProps = state => ({ category: state.edit.category })
+export default connect(mapStateToProps)(FormCategories)
