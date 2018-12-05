@@ -13,7 +13,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 
 // Containers
-import { Companies, CompaniesForm, Categories, CategoriesForm } from './containers';
+import { Companies, CompaniesForm, Categories, CategoriesForm } from './components';
 
 ReactDOM.render((
     <HashRouter>
