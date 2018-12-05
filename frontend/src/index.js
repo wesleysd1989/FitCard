@@ -22,6 +22,7 @@ ReactDOM.render((
       <Route exact path="/companies/new" name="CompaniesForm Page" component={CompaniesForm}/>
       <Route exact path="/categories" name="Categories Page" component={Categories}/>
       <Route exact path="/categories/new" name="CategoriesForm Page" component={CategoriesForm}/>
+      <Route exact path="/:id/edit" name="CategoriesForm Page" component={CategoriesForm}/>
       <Redirect from="/*" to="/companies" />
       </Switch>
     </HashRouter>
