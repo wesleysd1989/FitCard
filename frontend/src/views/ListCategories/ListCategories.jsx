@@ -2,6 +2,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { idEdit } from '../../edit/EditAction'
 
 const URL = 'http://localhost:3003/api/categories';
 
@@ -17,8 +21,9 @@ class ListCategories extends Component {
             .then(resp => this.setState({ ...this.state, list: resp.data }))
     }
 
-    renderRows = () => {
+    renderRows = (idEdit) => {
         const list = this.state.list || []
+        const categoryId = idEdit
         return list.map(category => (
             <tr key={category._id}>
                 <td>
@@ -26,7 +31,7 @@ class ListCategories extends Component {
                     <small>{category.description}</small>
                 </td>
                 <td>
-                    <Link to={{pathname:`/${category._id}/edit`,state: {categoryId: category._id}}} className="btn btn-outline-info btn-sm mr-2">Editar</Link>
+                    <Link to={`/${category._id}/edit`} onClick={categoryId.bind(this, category) } className="btn btn-outline-info btn-sm mr-2">Editar</Link>
                     <button onClick={() => this.handleRemove(category)} className="btn btn-outline-danger btn-sm">Excluir</button>
                 </td>
             </tr>
@@ -39,6 +44,7 @@ class ListCategories extends Component {
     }
 
     render() {
+        const idEdit = this.props.idEdit
         return (
             <div className="container mb-5">
                 <nav aria-label="breadcrumb">
@@ -53,7 +59,7 @@ class ListCategories extends Component {
                         </h1>
                     </div>
                     <div className="col-md">
-                        <a href="#/categories/new" className="btn btn-success float-right">
+                        <a href="#/categories/new" onClick={idEdit.bind(this, null) } className="btn btn-success float-right">
                             + Nova Categoria
                         </a>
                     </div>
@@ -61,16 +67,17 @@ class ListCategories extends Component {
                 <table className="table table-hover">
                     <thead>
                         <tr className="bg-primary text-light">
-                            <th>Categorias</th>
+                            <th>Categorias </th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderRows()}
+                        {this.renderRows(idEdit)}
                     </tbody>
                 </table>
             </div>
         )
     }
 }
-export default ListCategories
+const mapDispatchToProps = dispatch => bindActionCreators({ idEdit }, dispatch)
+export default connect(null, mapDispatchToProps )(ListCategories)
