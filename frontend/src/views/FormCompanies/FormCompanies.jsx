@@ -68,17 +68,18 @@ class FormCompanies extends Component {
 
     changeStateCategory(value) {
         this.setState({ categoryValue: value })
-        if (value === "Categoria 2" && this.state.telephoneValue === "") {
+        
+        if (value === "Supermercado" && this.state.telephoneValue === "") {
             this.setState({ telephoneChecked: true })
         }
-        else {
+        else if(value !== "Supermercado") {
             this.setState({ telephoneChecked: false })
         }
     }
 
     changeStateTelephone(value) {
         this.setState({ telephoneValue: value })
-        if (value === "" && this.state.categoryValue === "Categoria 2") {
+        if (value === "" && this.state.categoryValue === "Supermercado") {
             this.setState({ telephoneChecked: true })
         }
         else {
