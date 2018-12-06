@@ -1,9 +1,11 @@
 
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { reduxForm, Field } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import { registerCategory, updateCategory } from "../../category/CategoryActions";
 import Messages from '../../common/Messages/'
 import Input from '../Form/'
 
@@ -16,6 +18,28 @@ class FormCategories extends Component {
             categoryCheck2: false,
             categoryValue: ""
         }
+        this.loadEdit()
+    }
+
+    loadEdit() {
+        if (this.props.category === null) {
+            return
+        }
+        else {
+            this.props.change("_id", this.props.category._id)
+            this.props.change("name", this.props.category.name)
+            this.props.change("description", this.props.category.description)
+        }
+    }
+
+    onSubmit(values) {
+        const { registerCategory } = this.props
+        registerCategory(values)
+    }
+
+    onSubmitEdit(values) {
+       const { updateCategory } = this.props
+       updateCategory(values)
     }
 
     changeCategoryName(value) {
@@ -36,16 +60,17 @@ class FormCategories extends Component {
     }
 
     check(categoria) {
-            if (categoria === "" || categoria.length <=1)
-                this.setState({ verified: false })
-            else 
-                this.setState({ verified: true })
+        if (categoria === "" || categoria.length <= 1)
+            this.setState({ verified: false })
+        else
+            this.setState({ verified: true })
     }
 
     render() {
         const categoryCheck1 = this.state.categoryCheck1
         const categoryCheck2 = this.state.categoryCheck2
         const category = this.props.category
+        const { handleSubmit } = this.props
         return (
             <div className="container">
                 <nav aria-label="breadcrumb">
@@ -67,47 +92,85 @@ class FormCategories extends Component {
                         </a>
                     </div>
                 </div>
-                <form >
-                    <div className="card">
-                        <div className="card-header">
-                            Informações sobre a categoria
-                        </div>
-                        <div className="card-body">
-                            <div className="form-row">
-                                <div className="form-group col-md-4">
-                                    <label htmlFor="name">Nome</label>
-                                    {!!category ?
-                                    <input type="text" className="form-control" defaultValue={category.name} onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" formcontrolname="name" />
-                                    :
-                                    <input type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" formcontrolname="name" />
-                                    }
-                                    <div className="text-danger" >
-                                        {!!categoryCheck1 ? <div >dado obrigatório</div> : <div></div>}
-                                        {!!categoryCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
+                {!!category ?
+                    <form onSubmit={handleSubmit(v => this.onSubmitEdit(v))} >
+                        <div className="card">
+                            <div className="card-header">
+                                Informações sobre a categoria
+                            </div>
+                            <div className="card-body">
+                                <div className="form-row">
+                                    <div className="form-group col-md-4">
+                                        <Field component={Input} type="hidden" className="form-control" id="_id" name="_id" />
+                                        <label htmlFor="name">Nome</label>
+                                        {!!category ?
+                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
+                                            :
+                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
+                                        }
+                                        <div className="text-danger" >
+                                            {!!categoryCheck1 ? <div >dado obrigatório</div> : <div></div>}
+                                            {!!categoryCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group col-md-8">
-                                    <label htmlFor="description">Descrição</label>
-                                    {!!category ?
-                                    <input type="text" className="form-control" defaultValue={category.description} onChange={(e) => { this.check(e.target.value); }} id="description" formcontrolname="description" />
-                                    :
-                                    <input type="text" className="form-control" id="description" formcontrolname="description" />
-                                    }
+                                    <div className="form-group col-md-8">
+                                        <label htmlFor="description">Descrição</label>
+                                        {!!category ?
+                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.check(e.target.value); }} id="description" name="description" />
+                                            :
+                                            <Field component={Input} type="text" className="form-control" id="description" name="description" />
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {!!category ? 
-                    <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Editar</button> 
-                    : 
-                    <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
-                    }
-                </form>
+                        <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3"><Redirect to={"/categories"} />Editar</button>
+                    </form>
+                    :
+                    <form onSubmit={handleSubmit(v => this.onSubmit(v))} >
+                        <div className="card">
+                            <div className="card-header">
+                                Informações sobre a categoria
+                        </div>
+                            <div className="card-body">
+                                <div className="form-row">
+                                    <div className="form-group col-md-4">
+                                        <Field component={Input} type="hidden" className="form-control" id="_id" name="_id" />
+                                        <label htmlFor="name">Nome</label>
+                                        {!!category ?
+                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
+                                            :
+                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
+                                        }
+                                        <div className="text-danger" >
+                                            {!!categoryCheck1 ? <div >dado obrigatório</div> : <div></div>}
+                                            {!!categoryCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
+                                        </div>
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <label htmlFor="description">Descrição</label>
+                                        {!!category ?
+                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.check(e.target.value); }} id="description" name="description" />
+                                            :
+                                            <Field component={Input} type="text" className="form-control" id="description" name="description" />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {!!category ?
+                            <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Editar</button>
+                            :
+                            <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+                        }
+                    </form>
+                }
+                <Messages />
             </div>
         )
     }
 }
 FormCategories = reduxForm({ form: 'categoriesForm' })(FormCategories)
 const mapStateToProps = state => ({ category: state.edit.edit })
-const mapDispatchToProps = dispatch => bindActionCreators({  },dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ registerCategory, updateCategory }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(FormCategories)
