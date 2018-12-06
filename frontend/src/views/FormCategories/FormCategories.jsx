@@ -1,6 +1,11 @@
 
 import React, { Component } from 'react'
+import { reduxForm, Field } from 'redux-form'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import Messages from '../../common/Messages/'
+import Input from '../Form/'
 
 class FormCategories extends Component {
     constructor(props) {
@@ -103,5 +108,7 @@ class FormCategories extends Component {
         )
     }
 }
-const mapStateToProps = state => ({ category: state.edit.category })
-export default connect(mapStateToProps)(FormCategories)
+FormCategories = reduxForm({ form: 'categoriesForm' })(FormCategories)
+const mapStateToProps = state => ({ category: state.edit.edit })
+const mapDispatchToProps = dispatch => bindActionCreators({  },dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(FormCategories)
