@@ -11,5 +11,6 @@ export default props => (
         position='top-right'
         transitionIn='fadeIn'
         transitionOut='fadeOut'
+        focus={true}
         progressBar />
 )
