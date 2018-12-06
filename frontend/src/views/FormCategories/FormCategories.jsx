@@ -102,7 +102,6 @@ class FormCategories extends Component {
                     : 
                     <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
                     }
-                    
                 </form>
             </div>
         )
