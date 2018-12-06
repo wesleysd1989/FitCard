@@ -1,0 +1,6 @@
+{
+    "name": "category-reducer",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./CategoryReducer.js"
+  }
