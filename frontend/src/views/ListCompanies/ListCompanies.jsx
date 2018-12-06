@@ -1,8 +1,61 @@
 
 import React, { Component } from 'react'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { idEdit } from '../../edit/EditAction'
+
+const URL = 'http://localhost:3003/api/companies';
 
 class ListCompanies extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { list: [] }
+        this.refresh()
+    }
+
+    renderRows = (idEdit) => {
+        const list = this.state.list || []
+        const companyId = idEdit
+        return list.map(company => (
+            <tr key={company._id}>
+                <td>
+                    <strong>{company.socialName}</strong><br />
+                    <small className="text-success">{company.registerDate}</small><br />
+                    <small >{company.fantasyName}</small>
+                </td>
+                <td >
+                    {company.category}
+                </td>
+                {!!company.status ? <td className="text-center">
+                    Ativada
+                </td>
+                :
+                <td className="text-center">
+                    Desativada
+                </td>}
+                <td className="text-center">
+                <Link to={`/${company._id}/edit`} onClick={companyId.bind(this, company) } className="btn btn-outline-info btn-sm mr-2">Editar</Link>
+                    <button onClick={() => this.handleRemove(company)} className="btn btn-outline-danger btn-sm">Excluir</button>
+                </td>
+            </tr>
+        ))
+    }
+
+    refresh() {
+        axios.get(`${URL}?sort=-createdAt$`)
+            .then(resp => this.setState({ ...this.state, list: resp.data }))
+    }
+
+    handleRemove(company) {
+        axios.delete(`${URL}/${company._id}`)
+            .then(resp => this.refresh(this.state.description))
+    }
+
     render() {
+        const idEdit = this.props.idEdit
         return (
             <div className="container mb-5">
                 <nav aria-label="breadcrumb">
@@ -32,44 +85,12 @@ class ListCompanies extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr >
-                            <td>
-                                <strong>Nome da Empresa Aqui</strong><br />
-                                <small className="text-success">10:20 12/12/2012</small><br />
-                                <small >Nome Fantasia</small>
-                            </td>
-                            <td >
-                                Categoria Aqui
-                                    </td>
-                            <td className="text-center">
-                                Status Aqui
-                                    </td>
-                            <td className="text-center">
-                                <a href="#/:id/edit" className="btn btn-outline-info btn-sm mr-2">Editar</a>
-                                <button href="#/:id/delete" className="btn btn-outline-danger btn-sm">Excluir</button>
-                            </td>
-                        </tr>
-                        <tr >
-                            <td>
-                                <strong>Nome da Empresa Aqui</strong><br />
-                                <small className="text-success">10:20 12/12/2012</small><br />
-                                <small >Nome Fantasia</small>
-                            </td>
-                            <td >
-                                Categoria Aqui
-                                    </td>
-                            <td className="text-center">
-                                Status Aqui
-                                    </td>
-                            <td className="text-center">
-                                <a href="#/:id/edit" className="btn btn-outline-info btn-sm mr-2">Editar</a>
-                                <button href="#/:id/delete" className="btn btn-outline-danger btn-sm">Excluir</button>
-                            </td>
-                        </tr>
+                        {this.renderRows(idEdit)}
                     </tbody>
                 </table>
             </div>
         )
     }
 }
-export default ListCompanies
+const mapDispatchToProps = dispatch => bindActionCreators({ idEdit }, dispatch)
+export default connect(null, mapDispatchToProps)(ListCompanies)
