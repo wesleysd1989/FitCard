@@ -36,7 +36,7 @@ class FormCategories extends Component {
     }
 
     check(categoria) {
-            if (categoria === "")
+            if (categoria === "" || categoria.length <=1)
                 this.setState({ verified: false })
             else 
                 this.setState({ verified: true })
