@@ -70,7 +70,7 @@ class ListCompanies extends Component {
                         </h1>
                     </div>
                     <div className="col-md">
-                        <a href="#/companies/new" className="btn btn-success float-right">
+                        <a href="#/companies/new" onClick={idEdit.bind(this, null) } className="btn btn-success float-right">
                             + Nova Empresa
                         </a>
                     </div>
