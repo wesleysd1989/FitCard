@@ -30,11 +30,11 @@ class ListCompanies extends Component {
                     {company.category}
                 </td>
                 {!!company.status ? <td className="text-center">
-                    Ativada
+                    Ativa
                 </td>
                 :
                 <td className="text-center">
-                    Desativada
+                    Inativa
                 </td>}
                 <td className="text-center">
                 <Link to={`/companies/${company._id}/edit`} onClick={companyId.bind(this, company) } className="btn btn-outline-info btn-sm mr-2">Editar</Link>
