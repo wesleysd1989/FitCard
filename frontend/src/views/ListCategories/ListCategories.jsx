@@ -31,7 +31,7 @@ class ListCategories extends Component {
                     <small>{category.description}</small>
                 </td>
                 <td>
-                    <Link to={`/${category._id}/edit`} onClick={categoryId.bind(this, category) } className="btn btn-outline-info btn-sm mr-2">Editar</Link>
+                    <Link to={`/categories/${category._id}/edit`} onClick={categoryId.bind(this, category) } className="btn btn-outline-info btn-sm mr-2">Editar</Link>
                     <button onClick={() => this.handleRemove(category)} className="btn btn-outline-danger btn-sm">Excluir</button>
                 </td>
             </tr>

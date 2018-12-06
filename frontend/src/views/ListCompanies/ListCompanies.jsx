@@ -37,7 +37,7 @@ class ListCompanies extends Component {
                     Desativada
                 </td>}
                 <td className="text-center">
-                <Link to={`/${company._id}/edit`} onClick={companyId.bind(this, company) } className="btn btn-outline-info btn-sm mr-2">Editar</Link>
+                <Link to={`/companies/${company._id}/edit`} onClick={companyId.bind(this, company) } className="btn btn-outline-info btn-sm mr-2">Editar</Link>
                     <button onClick={() => this.handleRemove(company)} className="btn btn-outline-danger btn-sm">Excluir</button>
                 </td>
             </tr>
