@@ -1,7 +1,7 @@
 
-export function idEdit(category) {
+export function idEdit(edit) {
   return {
     type: 'ID_EDIT',
-    category
+    edit
   }
 }
