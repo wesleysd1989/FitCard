@@ -16,6 +16,13 @@ class ListCompanies extends Component {
         this.refresh()
     }
 
+    componentDidMount(){
+        this.refresh()
+    }
+    componentWillMount(){
+        this.refresh()
+    }
+
     renderRows = (idEdit) => {
         const list = this.state.list || []
         const companyId = idEdit
