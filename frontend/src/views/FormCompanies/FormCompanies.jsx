@@ -295,6 +295,7 @@ class FormCompanies extends Component {
                         </div>
                     </div>
                 </form>
+                <Messages />
             </div>
         )
     }
