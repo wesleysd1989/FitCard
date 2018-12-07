@@ -94,7 +94,7 @@ class FormCategories extends Component {
                     </div>
                 </div>
                 {!!category ?
-                    <form onSubmit={handleSubmit(v => this.onSubmitEdit(v))} action='/categories' >
+                    <form onSubmit={handleSubmit(v => this.onSubmitEdit(v))} >
                         <div className="card">
                             <div className="card-header">
                                 Informações sobre a categoria
