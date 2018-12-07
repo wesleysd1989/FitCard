@@ -1,10 +1,13 @@
 
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { reduxForm, Field } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import axios from 'axios'
+import {format} from 'date-fns'
 
+import { registerCompany, updateCompany } from "../../company/CompanyActions";
 import Messages from '../../common/Messages/'
 import Input from '../Form/'
 import MaskedInput from 'react-maskedinput'
@@ -29,9 +32,35 @@ class FormCompanies extends Component {
             cnpjValue: "",
             telephoneValue: "",
             categoryValue: "",
-            list: []
+            list: [],
+            fireRedirect: false
         }
+        
+        this.props.change("status", true)
         this.refresh()
+        this.loadEdit()
+    }
+
+    loadEdit() {
+        if (this.props.company === null) {
+            const date = format(new Date(), 'HH:mm DD/MM/YYYY')
+            this.props.change("registerDate", date)
+        }
+        else {
+            this.props.change("_id", this.props.company._id)
+            this.props.change("status", this.props.company.status)
+            this.props.change("socialName", this.props.company.socialName)
+            this.props.change("fantasyName", this.props.company.fantasyName)
+            this.props.change("cnpj", this.props.company.cnpj)
+            this.props.change("category", this.props.company.category)
+            this.props.change("agency", this.props.company.agency)
+            this.props.change("account", this.props.company.account)
+            this.props.change("email", this.props.company.email)
+            this.props.change("telephone", this.props.company.telephone)
+            this.props.change("address", this.props.company.address)
+            this.props.change("city", this.props.company.city)
+            this.props.change("province", this.props.company.province)
+        }
     }
 
     refresh() {
@@ -107,19 +136,28 @@ class FormCompanies extends Component {
 
     renderCategories = () => {
         const list = this.state.list || []
-        return list.map(category => (
-                <option key={category._id}>
+        return list.map((category, index) => (
+                <option key={index}> 
                     {category.name}
                 </option>
         ))
     }
 
+    onSubmit(values) {
+        const { registerCompany } = this.props
+        registerCompany(values)
+        this.setState({ fireRedirect: true })
+    }
+
+    onSubmitEdit(values) {
+        const { updateCompany } = this.props
+        updateCompany(values)
+        this.setState({ fireRedirect: true })
+    }
+
     render() {
-        const socialNameCheck1 = this.state.socialNameCheck1
-        const socialNameCheck2 = this.state.socialNameCheck2
-        const cnpjCheck = this.state.cnpjCheck
-        const telephoneChecked = this.state.telephoneChecked
-        const company = this.props.company
+        const { fireRedirect, telephoneChecked, cnpjCheck, socialNameCheck2, socialNameCheck1 } = this.state
+        const { handleSubmit, company } = this.props
         return (
             <div className="container">
                 <nav aria-label="breadcrumb">
@@ -141,7 +179,8 @@ class FormCompanies extends Component {
                         </a>
                     </div>
                 </div>
-                <form>
+                {!!company ?
+                <form onSubmit={handleSubmit(v => this.onSubmitEdit(v))} >
                     <div className="card">
                         <div className="card-header">
                             Informações sobre a empresa
@@ -150,14 +189,15 @@ class FormCompanies extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-2">
                                     <label htmlFor="status">Status da empresa</label>
+                                    <Field component={Input} type="hidden" className="form-control" id="_id" name="_id" />
                                     <div className="form-check form-check-inline">
-                                        <Field type="radio" name="newsletter" component="input" value="true" onChange={(e) => { this.setState({ ativa: !this.state.ativa }) }} checked={this.state.ativa} />
+                                        <Field type="radio" name="status" component="input" value="true" onChange={(e) => { this.setState({ ativa: !this.state.ativa }) }} checked={this.state.ativa} />
                                         <label className="form-check-label mx-1" htmlFor="yesRadios">
                                             Ativa
                                     </label>
                                     </div>
                                     <div className="form-check form-check-inline">
-                                        <Field type="radio" name="newsletter" component="input" value="false" onChange={(e) => { this.setState({ ativa: !this.state.ativa }) }} checked={!this.state.ativa} />
+                                        <Field type="radio" name="status" component="input" value="false" onChange={(e) => { this.setState({ ativa: !this.state.ativa }) }} checked={!this.state.ativa} />
                                         <label className="form-check-label mx-1" htmlFor="noRadios">
                                             Inativa
                                         </label>
@@ -167,11 +207,7 @@ class FormCompanies extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="socialName">*Razão Social</label>
-                                    {!!company ?
-                                        <input type="text" placeholder="Razão Social" defaultValue={company.socialName} onChange={(e) => { this.changeStateSocialName(e.target.value); this.check(e.target.value, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue); }} className="form-control" id="socialName" formcontrolname="socialName" />
-                                        :
-                                        <input type="text" placeholder="Razão Social" onChange={(e) => { this.changeStateSocialName(e.target.value); this.check(e.target.value, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue); }} className="form-control" id="socialName" formcontrolname="socialName" />
-                                    }
+                                        <Field type="text" component={Input} placeholder="Razão Social"onChange={(e) => { this.changeStateSocialName(e.target.value); this.check(e.target.value, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue); }} className="form-control" id="socialName" name="socialName" />
                                     <div className="text-danger" >
                                         {!!socialNameCheck1 ? <div >dado obrigatório</div> : <div></div>}
                                         {!!socialNameCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
@@ -181,20 +217,17 @@ class FormCompanies extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="fantasyName">Nome Fantasia</label>
-                                    {!!company ?
-                                        <input type="text" className="form-control" defaultValue={company.fantasyName} placeholder="Nome Fantasia" id="fantasyName" formcontrolname="fantasyName" />
-                                        :
-                                        <input type="text" className="form-control" placeholder="Nome Fantasia" id="fantasyName" formcontrolname="fantasyName" />
-                                    }
+                                    <Field type="text" component={Input} className="form-control" placeholder="Nome Fantasia" id="fantasyName" name="fantasyName" />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-4">
                                     <label htmlFor="cnpj">*CNPJ</label>
+                                    <Field component={Input} type="hidden" name="cnpj" />
                                     {!!company ?
-                                        <MaskedInput className="form-control text-right" value={company.cnpj} placeholder="CNPJ" mask="11.111.111/1111-11" id="cnpj" formcontrolname="cnpj" name="cnpj" size="18" onChange={(e) => { this.changeStateCNPJ(e.target.value); this.check(this.state.socialNameValue, e.target.value, this.state.categoryValue, this.state.telephoneValue); }} />
+                                        <MaskedInput className="form-control text-right" value={company.cnpj} placeholder="CNPJ" mask="11.111.111/1111-11" id="cnpj" size="18" onChange={(e) => { this.changeStateCNPJ(e.target.value); this.check(this.state.socialNameValue, e.target.value, this.state.categoryValue, this.props.change("cnpj", e.target.value), this.state.telephoneValue); }} />
                                         :
-                                        <MaskedInput className="form-control text-right" placeholder="CNPJ" mask="11.111.111/1111-11" id="cnpj" formcontrolname="cnpj" name="cnpj" size="18" onChange={(e) => { this.changeStateCNPJ(e.target.value); this.check(this.state.socialNameValue, e.target.value, this.state.categoryValue, this.state.telephoneValue); }} />
+                                        <MaskedInput className="form-control text-right" placeholder="CNPJ" mask="11.111.111/1111-11" id="cnpj" name="cnpj" size="18" onChange={(e) => { this.changeStateCNPJ(e.target.value); this.check(this.state.socialNameValue, e.target.value, this.state.categoryValue, this.state.telephoneValue); }} />
                                     }
                                     <div className="text-danger">
                                         {!!cnpjCheck ? <div >CNPJ invalido ou obrigatório</div> : <div></div>}
@@ -202,15 +235,16 @@ class FormCompanies extends Component {
                                 </div>
                                 <div className="form-group col-md-3">
                                     <label htmlFor="categoryId">Categoria</label>
+                                    <Field component={Input} type="hidden" name="category" />
                                     {!!company ?
-                                    <select name="categoryId" id="categoryId"  onChange={(e) => { this.changeStateCategory(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, e.target.value, this.state.telephoneValue); }} formcontrolname="categoryId" className="form-control">
-                                        <option value={company.categoryId}>
+                                    <select name="category" id="category"  onChange={(e) => { this.changeStateCategory(e.target.value);  this.props.change("category", e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, e.target.value, this.state.telephoneValue); }} formcontrolname="categoryId" className="form-control">
+                                        <option >
                                             {company.category}
                                         </option>
                                         {this.renderCategories()}
                                     </select>
                                     :
-                                    <select name="categoryId" id="categoryId" onChange={(e) => { this.changeStateCategory(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, e.target.value, this.state.telephoneValue); }} formcontrolname="categoryId" className="form-control">
+                                    <select name="category" id="category" onChange={(e) => { this.changeStateCategory(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, e.target.value, this.state.telephoneValue); }} formcontrolname="categoryId" className="form-control">
                                         <option>
 
                                         </option>
@@ -220,36 +254,35 @@ class FormCompanies extends Component {
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label htmlFor="agency">Agencia</label>
+                                    <Field component={Input} type="hidden" name="agency" />
                                     {!!company ?
-                                        <MaskedInput className="form-control text-right" value={company.agency} placeholder="Agencia" mask="111-1" id="agency" formcontrolname="agency" name="agency" size="15" />
+                                        <MaskedInput className="form-control text-right" value={company.agency} onChange={(e) => { this.props.change("agency", e.target.value) }} placeholder="Agencia" mask="111-1" id="agency" name="agency" size="15" />
                                         :
-                                        <MaskedInput className="form-control text-right" placeholder="Agencia" mask="111-1" id="agency" formcontrolname="agency" name="agency" size="15" />
+                                        <MaskedInput className="form-control text-right" onChange={(e) => { this.props.change("agency", e.target.value) }} placeholder="Agencia" mask="111-1" id="agency" name="agency" size="15" />
                                     }
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <label htmlFor="acount">Conta</label>
+                                    <label htmlFor="account">Conta</label>
+                                    <Field component={Input} type="hidden" name="account" />
                                     {!!company ?
-                                        <MaskedInput className="form-control text-right" value={company.acount} placeholder="Conta" mask="11.111-1" id="acount" formcontrolname="acount" name="acount" size="15" />
+                                        <MaskedInput className="form-control text-right" value={company.account} placeholder="Conta" mask="11.111-1" id="account" name="account" size="15" />
                                         :
-                                        <MaskedInput className="form-control text-right" placeholder="Conta" mask="11.111-1" id="acount" formcontrolname="acount" name="acount" size="15" />
+                                        <MaskedInput className="form-control text-right" placeholder="Conta" mask="11.111-1" id="account" name="account" size="15" />
                                     }
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-8">
                                     <label htmlFor="email">E-Mail</label>
-                                    {!!company ?
-                                        <input type="text" placeholder="E-Mail" defaultValue={company.email} className="form-control" id="email" formcontrolname="email" />
-                                        :
-                                        <input type="text" placeholder="E-Mail" className="form-control" id="email" formcontrolname="email" />
-                                    }
+                                    <Field component={Input} type="text" placeholder="E-Mail" className="form-control" id="email" name="email" />
                                 </div>
                                 <div className="form-group col-md-3">
                                     <label htmlFor="telephone">Telefone</label>
+                                    <Field component={Input} type="hidden" name="telephone" />
                                     {!!company ?
-                                        <MaskedInput className="form-control text-right" value={company.telephone} placeholder="telefone" mask="+55 11 11111-1111" id="telephone" formcontrolname="telephone" name="telephone" size="20" onChange={(e) => { this.changeStateTelephone(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, e.target.value); }} />
+                                        <MaskedInput className="form-control text-right" value={company.telephone} placeholder="telefone" mask="+55 11 11111-1111" id="telephone" name="telephone" size="20" onChange={(e) => { this.changeStateTelephone(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, e.target.value); }} />
                                         :
-                                        <MaskedInput className="form-control text-right" placeholder="telefone" mask="+55 11 11111-1111" id="telephone" formcontrolname="telephone" name="telephone" size="20" onChange={(e) => { this.changeStateTelephone(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, e.target.value); }} />
+                                        <MaskedInput className="form-control text-right" placeholder="telefone" mask="+55 11 11111-1111" id="telephone" name="telephone" size="20" onChange={(e) => { this.changeStateTelephone(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, e.target.value); }} />
                                     }
                                     <div className="text-danger" >
                                         {!!telephoneChecked ? <div >dado obrigatório</div> : <div></div>}
@@ -259,27 +292,15 @@ class FormCompanies extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-5">
                                     <label htmlFor="address">Endereço</label>
-                                    {!!company ?
-                                        <input type="text" placeholder="Endereço" defaultValue={company.address} className="form-control" id="address" formcontrolname="address" />
-                                        :
-                                        <input type="text" placeholder="Endereço" className="form-control" id="address" formcontrolname="address" />
-                                    }
+                                    <Field component={Input} type="text" placeholder="Endereço" className="form-control" id="address" name="address" />
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label htmlFor="city">Cidade</label>
-                                    {!!company ?
-                                        <input type="text" placeholder="Cidade" defaultValue={company.city} className="form-control" id="city" formcontrolname="city" />
-                                        :
-                                        <input type="text" placeholder="Cidade" className="form-control" id="city" formcontrolname="city" />
-                                    }
+                                    <Field component={Input} type="text" placeholder="Cidade" className="form-control" id="city" name="city" />
                                 </div>
                                 <div className="form-group col-md-2">
                                     <label htmlFor="province">Estado</label>
-                                    {!!company ?
-                                        <input type="text" placeholder="Estado" defaultValue={company.province} className="form-control" id="province" formcontrolname="province" />
-                                        :
-                                        <input type="text" placeholder="Estado" className="form-control" id="province" formcontrolname="province" />
-                                    }
+                                    <Field component={Input} type="text" placeholder="Estado" className="form-control" id="province" name="province" />
                                 </div>
                             </div>
                         </div>
@@ -287,14 +308,125 @@ class FormCompanies extends Component {
                     <div className="row">
                         <div className="col-md-6 mt-3"> - Campos com * devem ser obrigatorios</div>
                         <div className="col-md-6">
-                            {!!company ?
-                                <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Editar</button>
-                                :
-                                <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
-                            }
+                            <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Editar</button>
+                            {fireRedirect && (
+                            <Redirect to={'/companies'} />
+                            )}
                         </div>
                     </div>
                 </form>
+                :
+                <form onSubmit={handleSubmit(v => this.onSubmit(v))} >
+                    <div className="card">
+                        <div className="card-header">
+                            Informações sobre a empresa
+                        </div>
+                        <div className="card-body">
+                            <div className="form-row">
+                                <div className="form-group col-md-2">
+                                    <label htmlFor="status">Status da empresa</label>
+                                    <Field component={Input} type="hidden" className="form-control" id="registerDate" name="registerDate" />
+                                    <div className="form-check form-check-inline">
+                                        <Field type="radio" name="status" component="input" value="true" onChange={(e) => { this.setState({ ativa: !this.state.ativa }) }} checked={this.state.ativa} />
+                                        <label className="form-check-label mx-1" htmlFor="yesRadios">
+                                            Ativa
+                                    </label>
+                                    </div>
+                                    <div className="form-check form-check-inline">
+                                        <Field type="radio" name="status" component="input" value="false" onChange={(e) => { this.setState({ ativa: !this.state.ativa }) }} checked={!this.state.ativa} />
+                                        <label className="form-check-label mx-1" htmlFor="noRadios">
+                                            Inativa
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-12">
+                                    <label htmlFor="socialName">*Razão Social</label>
+                                        <Field type="text" component={Input} placeholder="Razão Social"onChange={(e) => { this.changeStateSocialName(e.target.value); this.check(e.target.value, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue); }} className="form-control" id="socialName" name="socialName" />
+                                    <div className="text-danger" >
+                                        {!!socialNameCheck1 ? <div >dado obrigatório</div> : <div></div>}
+                                        {!!socialNameCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-12">
+                                    <label htmlFor="fantasyName">Nome Fantasia</label>
+                                    <Field type="text" component={Input} className="form-control" placeholder="Nome Fantasia" id="fantasyName" name="fantasyName" />
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-4">
+                                    <label htmlFor="cnpj">*CNPJ</label>
+                                    <Field component={Input} type="hidden" name="cnpj" />
+                                    <MaskedInput className="form-control text-right" placeholder="CNPJ" mask="11.111.111/1111-11" id="cnpj" name="cnpj" size="18" onChange={(e) => { this.changeStateCNPJ(e.target.value); this.check(this.state.socialNameValue, e.target.value, this.state.categoryValue,this.props.change("cnpj", e.target.value), this.state.telephoneValue); }} />
+                                    <div className="text-danger">
+                                        {!!cnpjCheck ? <div >CNPJ invalido ou obrigatório</div> : <div></div>}
+                                    </div>
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <label htmlFor="categoryId">Categoria</label>
+                                    <Field component={Input} type="hidden" name="category" />
+                                    <select name="category" id="category" onChange={(e) => { this.changeStateCategory(e.target.value);this.props.change("category", e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, e.target.value, this.state.telephoneValue); }} formcontrolname="categoryId" className="form-control">
+                                        <option>
+
+                                        </option>
+                                        {this.renderCategories()}
+                                    </select>
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label htmlFor="agency">Agencia</label>
+                                    <Field component={Input} type="hidden" name="agency" />
+                                    <MaskedInput className="form-control text-right" onChange={(e) => { this.props.change("agency", e.target.value) }} placeholder="Agencia" mask="111-1" id="agency" name="agency" size="15" />
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <label htmlFor="account">Conta</label>
+                                    <Field component={Input} type="hidden" name="account" />
+                                    <MaskedInput className="form-control text-right" onChange={(e) => { this.props.change("account", e.target.value) }} placeholder="Conta" mask="11.111-1" id="account" name="account" size="15" />
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-8">
+                                    <label htmlFor="email">E-Mail</label>
+                                    <Field component={Input} type="text" placeholder="E-Mail" className="form-control" id="email" name="email" />
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <label htmlFor="telephone">Telefone</label>
+                                    <Field component={Input} type="hidden" name="telephone" />
+                                    <MaskedInput className="form-control text-right" placeholder="telefone" mask="+55 11 11111-1111" id="telephone" name="telephone" size="20" onChange={(e) => { this.props.change("telephone", e.target.value); this.changeStateTelephone(e.target.value); this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, e.target.value); }} />
+                                    <div className="text-danger" >
+                                        {!!telephoneChecked ? <div >dado obrigatório</div> : <div></div>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-5">
+                                    <label htmlFor="address">Endereço</label>
+                                    <Field component={Input} type="text" placeholder="Endereço" className="form-control" id="address" name="address" />
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label htmlFor="city">Cidade</label>
+                                    <Field component={Input} type="text" placeholder="Cidade" className="form-control" id="city" name="city" />
+                                </div>
+                                <div className="form-group col-md-2">
+                                    <label htmlFor="province">Estado</label>
+                                    <Field component={Input} type="text" placeholder="Estado" className="form-control" id="province" name="province" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6 mt-3"> - Campos com * devem ser obrigatorios</div>
+                        <div className="col-md-6">
+                            <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+                            {fireRedirect && (
+                            <Redirect to={'/companies'} />
+                            )}
+                        </div>
+                    </div>
+                </form>
+                }
                 <Messages />
             </div>
         )
@@ -302,5 +434,5 @@ class FormCompanies extends Component {
 }
 FormCompanies = reduxForm({ form: 'companiesForm' })(FormCompanies)
 const mapStateToProps = state => ({ company: state.edit.edit })
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ registerCompany, updateCompany }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(FormCompanies)
