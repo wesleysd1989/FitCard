@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import Messages from '../../common/Messages/'
 import { idEdit } from '../../edit/EditAction'
 
 const URL = 'http://localhost:3003/api/companies';
@@ -95,6 +96,7 @@ class ListCompanies extends Component {
                         {this.renderRows(idEdit)}
                     </tbody>
                 </table>
+                <Messages />
             </div>
         )
     }
