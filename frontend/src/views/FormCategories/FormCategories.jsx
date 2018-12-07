@@ -20,7 +20,6 @@ class FormCategories extends Component {
             fireRedirect: false
         }
         this.loadEdit()
-        console.log(this.props.submitSucceeded)
     }
 
     loadEdit() {
