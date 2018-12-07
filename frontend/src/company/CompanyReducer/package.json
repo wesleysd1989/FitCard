@@ -1,0 +1,6 @@
+{
+    "name": "company-reducer",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./CompanyReducer.js"
+  }

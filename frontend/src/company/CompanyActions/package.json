@@ -1,0 +1,6 @@
+{
+    "name": "company-actions",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./CompanyActions.js"
+  }
