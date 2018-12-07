@@ -13,8 +13,7 @@ const companySchema = new mongoose.Schema({
   registerDate: { type: String,  required: false },
   status: { type: Boolean,  required: true},
   agency: { type: String,  required: false },
-  acount: { type: String,  required: false },
-  categoryId: { type: String,  required: false },
+  account: { type: String,  required: false },
   category: { type: String,  required: false }
 })
 module.exports = restful.model('Company', companySchema)
