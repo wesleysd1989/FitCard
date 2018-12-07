@@ -14,14 +14,18 @@ class ListCategories extends Component {
     constructor(props) {
         super(props)
         this.state = { list: [] }
+        
+    }
+    componentDidMount(){
         this.refresh()
     }
-
+    componentWillMount(){
+        this.refresh()
+    }
     refresh() {
         axios.get(`${URL}?sort=-createdAt$`)
             .then(resp => this.setState({ ...this.state, list: resp.data }))
     }
-
     renderRows = (idEdit) => {
         const list = this.state.list || []
         const categoryId = idEdit
@@ -45,7 +49,7 @@ class ListCategories extends Component {
     }
 
     render() {
-        const idEdit = this.props.idEdit
+        const {idEdit} = this.props
         return (
             <div className="container mb-5">
                 <nav aria-label="breadcrumb">

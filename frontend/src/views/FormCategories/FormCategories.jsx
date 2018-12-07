@@ -16,9 +16,11 @@ class FormCategories extends Component {
             verified: false,
             categoryCheck1: false,
             categoryCheck2: false,
-            categoryValue: ""
+            categoryValue: "",
+            fireRedirect: false
         }
         this.loadEdit()
+        console.log(this.props.submitSucceeded)
     }
 
     loadEdit() {
@@ -35,11 +37,13 @@ class FormCategories extends Component {
     onSubmit(values) {
         const { registerCategory } = this.props
         registerCategory(values)
+        this.setState({ fireRedirect: true })
     }
 
     onSubmitEdit(values) {
-       const { updateCategory } = this.props
-       updateCategory(values)
+        const { updateCategory } = this.props
+        updateCategory(values)
+        this.setState({ fireRedirect: true })
     }
 
     changeCategoryName(value) {
@@ -67,10 +71,8 @@ class FormCategories extends Component {
     }
 
     render() {
-        const categoryCheck1 = this.state.categoryCheck1
-        const categoryCheck2 = this.state.categoryCheck2
-        const category = this.props.category
-        const { handleSubmit } = this.props
+        const { fireRedirect, categoryCheck1, categoryCheck2 } = this.state
+        const { handleSubmit, category } = this.props
         return (
             <div className="container">
                 <nav aria-label="breadcrumb">
@@ -93,7 +95,7 @@ class FormCategories extends Component {
                     </div>
                 </div>
                 {!!category ?
-                    <form onSubmit={handleSubmit(v => this.onSubmitEdit(v))} >
+                    <form onSubmit={handleSubmit(v => this.onSubmitEdit(v))} action='/categories' >
                         <div className="card">
                             <div className="card-header">
                                 Informações sobre a categoria
@@ -103,11 +105,7 @@ class FormCategories extends Component {
                                     <div className="form-group col-md-4">
                                         <Field component={Input} type="hidden" className="form-control" id="_id" name="_id" />
                                         <label htmlFor="name">Nome</label>
-                                        {!!category ?
-                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
-                                            :
-                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
-                                        }
+                                        <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
                                         <div className="text-danger" >
                                             {!!categoryCheck1 ? <div >dado obrigatório</div> : <div></div>}
                                             {!!categoryCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
@@ -115,33 +113,28 @@ class FormCategories extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label htmlFor="description">Descrição</label>
-                                        {!!category ?
-                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.check(e.target.value); }} id="description" name="description" />
-                                            :
-                                            <Field component={Input} type="text" className="form-control" id="description" name="description" />
-                                        }
+                                        <Field component={Input} type="text" className="form-control" onChange={(e) => { this.check(e.target.value); }} id="description" name="description" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3"><Redirect to={"/categories"} />Editar</button>
+                        <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Editar</button>
+                        {fireRedirect && (
+                            <Redirect to={'/categories'} />
+                        )}
                     </form>
                     :
                     <form onSubmit={handleSubmit(v => this.onSubmit(v))} >
                         <div className="card">
                             <div className="card-header">
                                 Informações sobre a categoria
-                        </div>
+                            </div>
                             <div className="card-body">
                                 <div className="form-row">
                                     <div className="form-group col-md-4">
                                         <Field component={Input} type="hidden" className="form-control" id="_id" name="_id" />
                                         <label htmlFor="name">Nome</label>
-                                        {!!category ?
-                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
-                                            :
-                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
-                                        }
+                                        <Field component={Input} type="text" className="form-control" onChange={(e) => { this.changeCategoryName(e.target.value); this.check(e.target.value); }} id="name" name="name" />
                                         <div className="text-danger" >
                                             {!!categoryCheck1 ? <div >dado obrigatório</div> : <div></div>}
                                             {!!categoryCheck2 ? <div >deve ter no mínimo 2 caracteres</div> : <div></div>}
@@ -149,20 +142,15 @@ class FormCategories extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label htmlFor="description">Descrição</label>
-                                        {!!category ?
-                                            <Field component={Input} type="text" className="form-control" onChange={(e) => { this.check(e.target.value); }} id="description" name="description" />
-                                            :
-                                            <Field component={Input} type="text" className="form-control" id="description" name="description" />
-                                        }
+                                        <Field component={Input} type="text" className="form-control" id="description" name="description" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {!!category ?
-                            <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Editar</button>
-                            :
-                            <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
-                        }
+                        <button type="submit" disabled={!this.state.verified} className="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+                        {fireRedirect && (
+                            <Redirect to={'/categories'} />
+                        )}
                     </form>
                 }
                 <Messages />
