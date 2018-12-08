@@ -1,12 +1,12 @@
 
 import { toastr } from 'react-redux-toastr'
 import axios from 'axios'
-const URL = 'http://localhost:3003/api';
+import consts from "../../consts";
 export function registerCategory(values) {
-    return submit(values, `${URL}/categories`)
+    return submit(values, `${consts.API_URL}/categories`)
 }
 export function updateCategory(values) {
-    return change(values, `${URL}/categories/${values._id}`)
+    return change(values, `${consts.API_URL}/categories/${values._id}`)
 }
 function change(values, url) {
     return dispatch => {
