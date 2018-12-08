@@ -5,6 +5,13 @@ nodeJS: ">=8.11.2"
 NPM  
 MongoDB instalado localmente ou use [mlab](https://mlab.com/) eles possuem um serviço gratuito   
 
+# Principais tecnologias utilizadas
+ReactJs,  
+Redux,  
+MongoDB,  
+Bootstrap,  
+NodeJs  
+
 # Instalando Dependências
 
 **Backend** Roda na porta 3003:  
