@@ -7,8 +7,7 @@ import { bindActionCreators } from 'redux'
 
 import Messages from '../../common/Messages/'
 import { idEdit } from '../../edit/EditAction'
-
-const URL = 'http://localhost:3003/api/companies';
+import consts from "../../consts";
 
 class ListCompanies extends Component {
     constructor(props) {
@@ -53,7 +52,7 @@ class ListCompanies extends Component {
     }
 
     refresh() {
-        axios.get(`${URL}?sort=-createdAt$`)
+        axios.get(`${consts.API_URL}/companies?sort=-createdAt$`)
             .then(resp => this.setState({ ...this.state, list: resp.data }))
     }
 

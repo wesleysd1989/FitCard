@@ -7,8 +7,7 @@ import { bindActionCreators } from 'redux'
 
 import Messages from '../../common/Messages/'
 import { idEdit } from '../../edit/EditAction'
-
-const URL = 'http://localhost:3003/api/categories';
+import consts from "../../consts";
 
 class ListCategories extends Component {
     constructor(props) {
@@ -23,7 +22,7 @@ class ListCategories extends Component {
         this.refresh()
     }
     refresh() {
-        axios.get(`${URL}?sort=-createdAt$`)
+        axios.get(`${consts.API_URL}/categories?sort=-createdAt$`)
             .then(resp => this.setState({ ...this.state, list: resp.data }))
     }
     renderRows = (idEdit) => {

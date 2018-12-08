@@ -14,8 +14,7 @@ import MaskedInput from 'react-maskedinput'
 import cnpjValidatior from "@fnando/cnpj/dist/node";
 // eslint-disable-next-line
 import { isValid as isValidCnpj } from "@fnando/cnpj";
-
-const URL = 'http://localhost:3003/api/categories';
+import consts from "../../consts";
 const emailRegex = /\S+@\S+\.\S+/
 
 class FormCompanies extends Component {
@@ -196,7 +195,7 @@ class FormCompanies extends Component {
     }
     
     refresh() {
-        axios.get(`${URL}?sort=-createdAt$`)
+        axios.get(`${consts.API_URL}/categories?sort=-createdAt$`)
             .then(resp => this.setState({ ...this.state, list: resp.data }))
     }
 
