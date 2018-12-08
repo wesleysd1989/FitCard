@@ -19,7 +19,17 @@ class FormCategories extends Component {
             categoryValue: "",
             fireRedirect: false
         }
+    }
+
+    componentDidMount(){
         this.loadEdit()
+    }
+
+    checkEdit(){
+        if (this.state.categoryValue === "" || this.state.categoryValue.length <= 1)
+            this.setState({ verified: false })
+        else
+            this.setState({ verified: true })
     }
 
     loadEdit() {
@@ -27,22 +37,11 @@ class FormCategories extends Component {
             return
         }
         else {
+            this.setState({ categoryValue: this.props.category.name })
             this.props.change("_id", this.props.category._id)
             this.props.change("name", this.props.category.name)
             this.props.change("description", this.props.category.description)
         }
-    }
-
-    onSubmit(values) {
-        const { registerCategory } = this.props
-        registerCategory(values)
-        this.setState({ fireRedirect: true })
-    }
-
-    onSubmitEdit(values) {
-        const { updateCategory } = this.props
-        updateCategory(values)
-        this.setState({ fireRedirect: true })
     }
 
     changeCategoryName(value) {
@@ -67,6 +66,18 @@ class FormCategories extends Component {
             this.setState({ verified: false })
         else
             this.setState({ verified: true })
+    }
+
+    onSubmit(values) {
+        const { registerCategory } = this.props
+        registerCategory(values)
+        this.setState({ fireRedirect: true })
+    }
+
+    onSubmitEdit(values) {
+        const { updateCategory } = this.props
+        updateCategory(values)
+        this.setState({ fireRedirect: true })
     }
 
     render() {
@@ -112,7 +123,7 @@ class FormCategories extends Component {
                                     </div>
                                     <div className="form-group col-md-8">
                                         <label htmlFor="description">Descrição</label>
-                                        <Field component={Input} type="text" className="form-control" onChange={(e) => { this.check(e.target.value); }} id="description" name="description" />
+                                        <Field component={Input} type="text" className="form-control" onChange={(e) => { this.checkEdit(); }} id="description" name="description" />
                                     </div>
                                 </div>
                             </div>
