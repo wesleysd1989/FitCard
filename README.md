@@ -5,7 +5,7 @@ nodeJS: ">=8.11.2"
 NPM  
 MongoDB instalado localmente ou use [mlab](https://mlab.com/) eles possuem um serviço gratuito   
 
-# Instalando Dependencias
+# Instalando Dependências
 
 **Backend** Roda na porta 3003:  
 navegue ate a pasta backend via CMD ou Terminal e escreva o comando abaixo  
@@ -46,3 +46,7 @@ navegue ate a pasta frontend via CMD ou Terminal e escreva o comando abaixo
 npm start
 ```
 
+# Deploy em servidor web para demonstração
+**Heroku**
+https://fitcard-f.herokuapp.com/#/
+OBS: a aplicação pode demonstrar lentidão no primeiro acesso, devido a aplicação esta no modo gratuito.
