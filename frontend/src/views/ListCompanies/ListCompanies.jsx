@@ -90,7 +90,7 @@ class ListCompanies extends Component {
                 <div className="form-row">
                     <input type="text" className="container mb-5 form-control" placeholder="Digite aqui sua pesquisa" onChange={(e) => { this.handleSearch(e.target.value); }}/>
                 </div>
-                <table className="table table-hover">
+                <table className="table table-hover table-responsive">
                     <thead>
                         <tr className="bg-primary text-light">
                             <th>Empresa</th>
