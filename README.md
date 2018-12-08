@@ -8,12 +8,12 @@ MongoDB instalado localmente ou use [mlab](https://mlab.com/) eles possuem um se
 # Instalando Dependências
 
 **Backend** Roda na porta 3003:  
-navegue ate a pasta backend via CMD ou Terminal e escreva o comando abaixo  
+navegue até a pasta backend via CMD ou Terminal e escreva o comando abaixo  
 ```
 npm install
 ```
 **FrontEnd** Roda na porta 3000:  
-navegue ate a pasta frontend via CMD ou Terminal e escreva o comando abaixo  
+navegue até a pasta frontend via CMD ou Terminal e escreva o comando abaixo  
 ```
 npm install
 ```
@@ -36,12 +36,12 @@ module.exports = {
 
 # Iniciando sistema  
 **Backend**:  
-navegue ate a pasta backend via CMD ou Terminal e escreva o comando abaixo  
+navegue até a pasta backend via CMD ou Terminal e escreva o comando abaixo  
 ```
 npm run dev
 ```
 **FrontEnd**:  
-navegue ate a pasta frontend via CMD ou Terminal e escreva o comando abaixo  
+navegue até a pasta frontend via CMD ou Terminal e escreva o comando abaixo  
 ```
 npm start
 ```
