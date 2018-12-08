@@ -43,19 +43,19 @@ class FormCompanies extends Component {
             this.setState({ emailMsg: true })
             setTimeout(() => {
                 this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue)
-            }, 1000);
+            }, 500);
         }else{
             this.setState({ emailMsg: false })
             setTimeout(() => {
                 this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue)
-            }, 1000);
+            }, 500);
         }
                 
         if(email.length <= 0){
             this.setState({ emailMsg: false })
             setTimeout(() => {
                 this.check(this.state.socialNameValue, this.state.cnpjValue, this.state.categoryValue, this.state.telephoneValue)
-            }, 1000);
+            }, 500);
         }
     }
 
@@ -327,7 +327,10 @@ class FormCompanies extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-7">
                                     <label htmlFor="email">E-Mail</label>
-                                    <Field component={Input} type="text" placeholder="E-Mail" onChange={(e) => { this.checkEdit(); }} className="form-control" id="email" name="email" />
+                                    <Field component={Input} type="text" placeholder="E-Mail" onChange={(e) => { this.testEmail(e.target.value) }} className="form-control" id="email" name="email" />
+                                    <div className="text-danger" >
+                                        {!!emailMsg ? <div >E-Mail invalido</div> : <div></div>}
+                                    </div>
                                 </div>
                                 <div className="form-group col-md-3">
                                     <label htmlFor="telephone">Telefone</label>

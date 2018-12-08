@@ -15,16 +15,25 @@ class ListCategories extends Component {
         this.state = { list: [] }
         
     }
+
     componentDidMount(){
         this.refresh()
     }
+
     componentWillMount(){
         this.refresh()
     }
-    refresh() {
-        axios.get(`${consts.API_URL}/categories?sort=-createdAt$`)
+
+    refresh(name) {
+        const search = name ? `&name__regex=/${name}/` : ''
+        axios.get(`${consts.API_URL}/categories?sort=-createdAt${search}`)
             .then(resp => this.setState({ ...this.state, list: resp.data }))
     }
+
+    handleSearch(name) {
+        this.refresh(name)
+    }
+
     renderRows = (idEdit) => {
         const list = this.state.list || []
         const categoryId = idEdit
@@ -43,7 +52,7 @@ class ListCategories extends Component {
     }
 
     handleRemove(category) {
-        axios.delete(`${URL}/${category._id}`)
+        axios.delete(`${consts.API_URL}/categories/${category._id}`)
             .then(resp => this.refresh(this.state.description))
     }
 
@@ -67,6 +76,9 @@ class ListCategories extends Component {
                             + Nova Categoria
                         </a>
                     </div>
+                </div>
+                <div className="form-row">
+                    <input type="text" className="container mb-5 form-control" placeholder="Digite aqui sua pesquisa" onChange={(e) => { this.handleSearch(e.target.value); }}/>
                 </div>
                 <table className="table table-hover">
                     <thead>

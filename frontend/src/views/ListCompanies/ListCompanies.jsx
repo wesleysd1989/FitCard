@@ -51,13 +51,18 @@ class ListCompanies extends Component {
         ))
     }
 
-    refresh() {
-        axios.get(`${consts.API_URL}/companies?sort=-createdAt$`)
+    handleSearch(socialName) {
+        this.refresh(socialName)
+    }
+
+    refresh(socialName) {
+        const search = socialName ? `&socialName__regex=/${socialName}/` : ''
+        axios.get(`${consts.API_URL}/companies?sort=-createdAt${search}`)
             .then(resp => this.setState({ ...this.state, list: resp.data }))
     }
 
     handleRemove(company) {
-        axios.delete(`${URL}/${company._id}`)
+        axios.delete(`${consts.API_URL}/companies/${company._id}`)
             .then(resp => this.refresh(this.state.description))
     }
 
@@ -81,6 +86,9 @@ class ListCompanies extends Component {
                             + Nova Empresa
                         </a>
                     </div>
+                </div>
+                <div className="form-row">
+                    <input type="text" className="container mb-5 form-control" placeholder="Digite aqui sua pesquisa" onChange={(e) => { this.handleSearch(e.target.value); }}/>
                 </div>
                 <table className="table table-hover">
                     <thead>
