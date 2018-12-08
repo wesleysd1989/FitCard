@@ -20,8 +20,7 @@ npm install
 
 # Configurando Banckend 
 
-**Backend** por favor renomeie o arquivo exemple.env para .env  
-
+Por favor renomeie o arquivo exemple.env para .env   
 altere o conteudo do arquivo com a string do seu banco de dados MongoDB  
 ```
 module.exports = {
