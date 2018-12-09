@@ -56,4 +56,4 @@ npm start
 # Deploy em servidor web para demonstração
 **Heroku**  
 https://fitcard-f.herokuapp.com/#/  
-OBS: a aplicação pode demonstrar lentidão no primeiro acesso, devido a aplicação esta no modo gratuito.  
+OBS: a aplicação pode demonstrar lentidão no primeiro acesso ou erro, por favor insistir 1 minuto ate serviço normalizar, devido a aplicação esta no modo gratuito.  
