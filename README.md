@@ -40,7 +40,14 @@ module.exports = {
     stringDB: 'mongodb://usuario:senha123@yourserver.mlab.com/fitcard'
 }
 ```
+# Configurando Frontend 
 
+altere o conteudo do arquivo FitCard/frontend/src/consts.js com o endereço do seu backend   
+```
+export default {
+    API_URL: 'http://localhost:3003/api',
+  }
+```  
 # Iniciando sistema  
 **Backend**:  
 navegue até a pasta backend via CMD ou Terminal e escreva o comando abaixo  
