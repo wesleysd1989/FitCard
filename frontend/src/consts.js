@@ -1,3 +1,3 @@
 export default {
-    API_URL: 'https://fitcard-b.herokuapp.com:/api',
+    API_URL: 'http://localhost:3003/api',
   }
